@@ -1,0 +1,52 @@
+.app-wrapper {
+	margin: 0 auto;
+	margin-top: 50px;
+	width: 1140px;
+	text-align: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-direction: column;
+}
+
+.button {
+	padding: 25px;
+	font-size: 25px;
+}
+
+.infoSpace {
+	display: flex;
+}
+
+.circle {
+	margin: 0 auto;
+	margin-top: 20px;
+	height: 400px;
+  width: 400px;
+  border-radius: 50%;
+	border: black solid 1px;
+	position: relative;
+	background-image: url("pizza.png") 
+}
+
+.counterList {
+	flex-direction: column;
+}
+
+.counterTitle {
+	font-size: 25px;
+	font-weight: bold
+}
+
+.counterNumber {
+	font-size: 45px;
+	font-weight: 400
+}
+
+.diagonalSlicing {
+	position: absolute;
+	left: 50%;
+	border: 1px black solid;
+	height: 400px;
+	counter-increment: i;
+}
