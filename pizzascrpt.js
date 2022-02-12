@@ -39,6 +39,7 @@ const goProcess = () => {
 
 		const partyMembers = await getAPI()
 		const pizzaEaters = partyMembers.filter(member => member.eatsPizza === true)
+    //members.filter(member => member.eatsPizza === true).length вставить при отрисовке пиццы в
 
 		const infoSpace = document.createElement("div")
 		const circle = document.createElement("div")

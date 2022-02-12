@@ -18,10 +18,13 @@ let store = {
     return result
   },
   getVegansNumber() {
-    let arr = this.state.diet.filter(guest => guest.isVegan === true)
+    let arr = 
     return arr.length
   }
 }
+
+
+
 
 export default store
 window.store = store

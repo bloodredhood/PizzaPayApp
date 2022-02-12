@@ -1,48 +1,31 @@
-import store from "./store"
 const commonLink = "https://gp-js-test.herokuapp.com/pizza/"
 
-const getData = {
-  guests() {
-    fetch(`${commonLink}guests`)
-    .then(response => response.json())
-    .then(data => {
-      store.state.guests = data.party
-    })
-  },
-  currency() {
-    fetch(`${commonLink}currency`)
-    .then(response => response.json())
-    .then(data => {
-      store.state.currency = data
-    })
-  },
-  diet() {
-    let arr = store.state.guests.map(guest => guest.name)
-    let result = arr.join(",");
-    arr = result.split(" ")
-    result = arr.join("%20")
-    let queryStr = result
-    fetch(`${commonLink}world-diets-book/${queryStr}`)
-    .then(response => response.json())
-    .then(data => {
-      store.state.diet = data.diet
-    })
-  },
-  veganPizza() {
-    fetch(`${commonLink}order/vegan/${store.getVegansNumber()}`)
-    .then(response => response.json())
-    .then(data => {
-      store.state.veganPizza = data.price
-    })
-  },
-  drinks() {
-    let membersNumber = store.state.guests.length
-    fetch(`${commonLink}order-cola/${membersNumber}`)
-    .then(response => response.json())
-    .then(data => {
-      store.state.drinks = data.price
-    })
+  export const getDataGuests = async() => {
+    const response = await fetch(`${commonLink}guests`)
+    const data = await response.json()
+    return data.party
   }
-}
 
-export default getData
+  export const getDataCurrency = async() => {
+    const response = await fetch(`${commonLink}currency`)
+    const data = await response.json()
+    return data
+  }
+
+  export const getDataDiet = async(queryStr) => {
+    const response = await fetch(`${commonLink}world-diets-book/${queryStr}`)
+    const data = await response.json()
+    return data.diet
+  }
+  
+  export const getDataVeganPizza = async(vegansNumber) => {
+    const response = await fetch(`${commonLink}order/vegan/${vegansNumber}`)
+    const data = await response.json()
+    return data
+  }
+
+  export const getDataDrinks = async(membersNumber) => {
+    const response = await fetch(`${commonLink}order-cola/${membersNumber}`)
+    const data = await response.json()
+    return data
+  }
