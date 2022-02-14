@@ -10,6 +10,7 @@ const LoadButton = () => {
   const [veganPizza, setVeganPizza] = useState({})
   const [drinks, setDrinks] = useState({})
   const [collectedMoney, setCollectedMoney] = useState(0)
+  const [commonState, setCommonState] = useState([])
 
   useEffect(() => {
     const commonLink = "https://gp-js-test.herokuapp.com/pizza/"
@@ -50,6 +51,22 @@ const LoadButton = () => {
     getDataVeganPizza(diet.filter(guest => guest.isVegan === true).length)
     getDataDrinks(members.length)
 
+    const getCommonState = (arr, arr1) => {
+      let arr2 = []
+      for (let i = 0; i < arr.length; i++) {
+        arr2.push({
+          name: arr[i].name,
+          eatsPizza: arr[i].eatsPizza,
+          isVegan: arr1[i].isVegan,
+          isPaid: false
+        })
+      }
+      return arr2
+    }
+
+    setCommonState(getCommonState(members, diet))
+
+
   }, [members, currency, diet, veganPizza, drinks])
 
   const checkFunction = () => {
@@ -68,22 +85,24 @@ const LoadButton = () => {
 
   const veganPizzaFullPriceBYN = (veganPizza, currency) => {
     return veganPizza.price.endsWith("USD")
-  ? Number(veganPizza.price.slice(-4)) / currency.USD
-  : veganPizza.price.endsWith("EUR")
-    ? Number(veganPizza.price.slice(-4)) / currency.EUR
-    : veganPizza.price
+      ? Number(veganPizza.price.slice(-4)) / currency.USD
+      : veganPizza.price.endsWith("EUR")
+        ? Number(veganPizza.price.slice(-4)) / currency.EUR
+        : veganPizza.price
   }
 
   const drinksFullPriceBYN = (drinks, currency) => {
     return drinks.price.endsWith("USD")
-  ? Number(drinks.price.slice(-4)) / currency.USD
-  : veganPizza.price.endsWith("EUR")
-    ? Number(drinks.price.slice(-4)) / currency.EUR
-    : drinks.price
+      ? Number(drinks.price.slice(-4)) / currency.USD
+      : veganPizza.price.endsWith("EUR")
+        ? Number(drinks.price.slice(-4)) / currency.EUR
+        : drinks.price
   }
 
-  const totalOrderValue = veganPizzaFullPriceBYN() + drinksFullPriceBYN()
+  const veganPizzaPricePerVegan = veganPizzaFullPriceBYN() / diet.filter(guest => guest.isVegan === true).length
+  const drinksPricePerMember = drinksFullPriceBYN() / members.length
 
+  const totalOrderValue = veganPizzaFullPriceBYN() + drinksFullPriceBYN()
 
   return (
     <div className="app-wrapper">
@@ -92,7 +111,7 @@ const LoadButton = () => {
         ? "loading..."
         : <div className="infoSpace">
           <div className="circle">{
-            pizzaEaters.forEach(member => (
+            pizzaEaters.map(member => (
               <div className="diagonalSlicing" style={`transform: rotate(${360 / pizzaEaters.length * pizzaEaters.indexOf(member)}deg)`}></div>
             ))
           }</div>
@@ -111,18 +130,23 @@ const LoadButton = () => {
               <th>Pay</th>
             </tr>
             {
-              members.forEach(member => (
-                <tr>
+              commonState.map(member => (
+                <tr key={member.name}>
                   <td>
-
+                    {member.isVegan ? <span style={{ color: "green" }}>{member.name}</span> : <span>{member.name}</span>}
                   </td>
                   <td>
-
+                    {member.eatsPizza && member.isVegan ? veganPizzaPricePerVegan + drinksPricePerMember : drinksPricePerMember}"BYN"
                   </td>
                   <td>
-
+                    {member.isPaid === false ? <button onClick={() => {
+                      setCommonState(member.isPaid = true)
+                      setCollectedMoney(collectedMoney + member.eatsPizza && member.isVegan ? veganPizzaPricePerVegan + drinksPricePerMember : drinksPricePerMember)
+                    }
+                    } disabled="false">PAY</button> : <button disabled="true">PAID</button>}
                   </td>
                 </tr>
+
               ))
             }
             < tr >
@@ -132,12 +156,12 @@ const LoadButton = () => {
             </tr>
             <tr>
               <td>Money to collect</td>
-              <td>{`${totalOrderValue - collectedMoney} BYN`}</td>
+              <td>{totalOrderValue - collectedMoney} BYN</td>
               <td></td>
             </tr>
             <tr>
               <td>Money collected</td>
-              <td>{`${collectedMoney} BYN`}</td>
+              <td>{collectedMoney} BYN</td>
               <td></td>
             </tr>
           </table>
