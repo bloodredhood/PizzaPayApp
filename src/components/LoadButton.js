@@ -51,34 +51,19 @@ const LoadButton = () => {
     getDataVeganPizza(diet.filter(guest => guest.isVegan === true).length)
     getDataDrinks(members.length)
 
-    const getCommonState = (arr, arr1) => {
-      let arr2 = []
-      for (let i = 0; i < arr.length; i++) {
-        arr2.push({
-          name: arr[i].name,
-          eatsPizza: arr[i].eatsPizza,
-          isVegan: arr1[i].isVegan,
-          isPaid: false
-        })
-      }
-      return arr2
-    }
-
-    setCommonState(getCommonState(members, diet))
-
-
   }, [members, currency, diet, veganPizza, drinks])
 
-  const checkFunction = () => {
-    let appWrapper = document.querySelector(".app-wrapper")
-    let button = document.querySelector(".button")
-    if (appWrapper.childElementCount > 1) {
-      if (appWrapper.lastChild === button) {
-        return
-      }
-      appWrapper.removeChild(appWrapper.lastChild)
-      checkFunction()
+  const getCommonState = (arr, arr1) => {
+    let arr2 = []
+    for (let i = 0; i < arr.length; i++) {
+      arr2.push({
+        name: arr[i].name,
+        eatsPizza: arr[i].eatsPizza,
+        isVegan: arr1[i].isVegan,
+        isPaid: false
+      })
     }
+    return arr2
   }
 
   const pizzaEaters = members.filter(member => member.eatsPizza === true)
@@ -106,8 +91,11 @@ const LoadButton = () => {
 
   return (
     <div className="app-wrapper">
-      <button onClick={checkFunction} className="button">Load</button>
-      {members.length === 0 && !diet.length === 0 && !Object.keys(currency).length === 0 && !Object.keys(veganPizza).length === 0 && !Object.keys(drinks).length === 0
+      <button onClick={() => {
+        setCommonState(getCommonState(members, diet))
+
+      }} className="button">Load</button>
+      {members.length === 0 || diet.length === 0 || Object.keys(currency).length === 0 || Object.keys(veganPizza).length === 0 || Object.keys(drinks).length === 0
         ? "loading..."
         : <div className="infoSpace">
           <div className="circle">{
@@ -141,7 +129,7 @@ const LoadButton = () => {
                   <td>
                     {member.isPaid === false ? <button onClick={() => {
                       setCommonState(member.isPaid = true)
-                      setCollectedMoney(collectedMoney + member.eatsPizza && member.isVegan ? veganPizzaPricePerVegan + drinksPricePerMember : drinksPricePerMember)
+                      setCollectedMoney( member.eatsPizza && member.isVegan ? collectedMoney + veganPizzaPricePerVegan + drinksPricePerMember : collectedMoney + drinksPricePerMember)
                     }
                     } disabled="false">PAY</button> : <button disabled="true">PAID</button>}
                   </td>
@@ -151,7 +139,7 @@ const LoadButton = () => {
             }
             < tr >
               <td>Total order</td>
-              <td>{`${totalOrderValue} BYN`}</td>
+              <td>{totalOrderValue} BYN</td>
               <td></td>
             </tr>
             <tr>

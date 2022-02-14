@@ -26,7 +26,7 @@
   border-radius: 50%;
 	border: black solid 1px;
 	position: relative;
-	background-image: url("pizza.png") 
+	background-image: url("./images/pizza.png") 
 }
 
 .counterList {
