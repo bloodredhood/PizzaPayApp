@@ -29,3 +29,16 @@ const commonLink = "https://gp-js-test.herokuapp.com/pizza/"
     const data = await response.json()
     return data
   }
+
+  export const getCommonStateFunc = (arr, arr1) => {
+    let arr2 = []
+    for (let i = 0; i < arr.length; i++) {
+      arr2.push({
+        name: arr[i].name,
+        eatsPizza: arr[i].eatsPizza,
+        isVegan: arr1[i].isVegan,
+        isPaid: false
+      })
+    }
+    return arr2
+  }
