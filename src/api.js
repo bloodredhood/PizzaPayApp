@@ -18,8 +18,8 @@ const commonLink = "https://gp-js-test.herokuapp.com/pizza/"
     return data.diet
   }
   
-  export const getDataVeganPizza = async(vegansNumber) => {
-    const response = await fetch(`${commonLink}order/vegan/${vegansNumber}`)
+  export const getDataVeganPizza = async(type, vegansNumber) => {
+    const response = await fetch(`${commonLink}order/${type}/${vegansNumber}`)
     const data = await response.json()
     return data
   }

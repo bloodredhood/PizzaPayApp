@@ -48,5 +48,30 @@
 	left: 50%;
 	border: 1px black solid;
 	height: 400px;
-	counter-increment: i;
+}
+
+table {
+  border-spacing: 0px;
+  border: 1px solid black;
+}
+
+thead{
+  border: 1px solid black
+}
+
+th {
+  border: 1px solid black
+}
+
+tr {
+  border: 1px solid black;
+}
+
+td {
+  border: 1px solid black;
+}
+
+.tableButton {
+  font-size: 25px;
+  padding: 5px;
 }

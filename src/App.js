@@ -1,11 +1,9 @@
-//import './App.css';
 import LoadButton from "./components/LoadButton"
 
-
-function App() {
+function App({state}) {
   return (
-    <div className="App">
-      <LoadButton />
+    <div>
+      <LoadButton state={state} />
     </div>
   );
 }
